@@ -2,6 +2,8 @@
 
 //Vector implementation
 
+using pair_rectangle = std::pair<Rectangle, Rectangle>;
+
 Vector::Vector(int x,int y): x_coord(x), y_coord(y) {
 }
 bool Vector::operator == (Vector v) {
@@ -78,14 +80,46 @@ Rectangle& Rectangle::operator += (Vector v) {
 unsigned int Rectangle::area() {
     return w * h;
 }
-std::pair<Rectangle, Rectangle> Rectangle::split_horizontally(unsigned int place) {
+pair_rectangle Rectangle::split_horizontally(unsigned int place) {
     assert(place < h);
     Position second(p.x(), p.y() + place);
     return std::make_pair(Rectangle(w, place, p), Rectangle(w, h - place, second));
 }
-std::pair<Rectangle, Rectangle> Rectangle::split_vertically(unsigned int place) {
+pair_rectangle Rectangle::split_vertically(unsigned int place) {
     assert(place < w);
     Position second(p.x() + place, p.y());
     return std::make_pair(Rectangle(place, h, p), Rectangle(w - place, h, second));
 }
 
+//Rectangles implementation
+
+Rectangles::Rectangles(std::initializer_list<Rectangle> l = {}): v(l) {
+}
+Rectangle& Rectangles::operator[] (size_t pos) {
+    return v[pos];
+}
+size_t Rectangles::size() {
+    return v.size();
+}
+bool Rectangles::operator == (Rectangles r) {
+    return v == r.v;
+}
+Rectangles& Rectangles::operator += (Vector v) {
+    for (Rectangle& r: v) {
+        r += v;
+    }
+}
+void Rectangles::insert_rectangles(size_t idx, pair_rectangle rec) {
+    v[idx] = rec.first;
+    v.push_back(v.back());
+    for (size_t i = v.size() - 1; i > idx + 1; i ++) {
+        v[i] = v[i - 1];
+    }
+    v[idx + 1] = rec.second;
+}
+void Rectangles::split_horizontally(size_t idx, unsigned int place) {
+    insert_rectangles(idx, split_horizontally(v[idx], place));
+}
+void Rectangles::split_vertically(size_t idx, unsigned int place) {
+    insert_rectangles(idx, split_vertically(v[idx], place));
+}

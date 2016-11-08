@@ -3,6 +3,9 @@
 
 #include <utility>
 #include <cassert>
+#include <cstddef>
+#include <vector>
+#include <initializer_list>
 
 class Vector {
 //TODO czy wystarczy wsadzenie "prywatne" tutaj, czy trzeba to jakoś lepiej ukryć?
@@ -46,6 +49,20 @@ public:
     unsigned int area();
     std::pair<Rectangle, Rectangle> split_horizontally(unsigned int place);
     std::pair<Rectangle, Rectangle> split_vertically(unsigned int place);
+};
+
+class Rectangles {
+private:
+    std::vector<Rectangle> v;
+    void insert_rectangles(size_t idx, std::pair<Rectangle, Rectangle>);
+public:
+    Rectangles(std::initializer_list<Rectangle>);
+    Rectangle& operator [] (size_t pos);
+    size_t size();
+    bool operator == (Rectangles);
+    Rectangles& operator += (Vector);
+    void split_horizontally(size_t idx, unsigned int place);
+    void split_vertically(size_t idx, unsigned int place);
 };
 
 
