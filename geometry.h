@@ -13,11 +13,16 @@ private:
     int x_coord, y_coord;
 public:
     Vector(int x,int y);
+    Vector(const Vector&);
+    Vector(Vector&&);
     bool operator == (Vector);
     int x();
     int y();
     Vector reflection();
     Vector& operator += (Vector);
+    Vector operator + (Vector a);
+    Vector& operator = (const Vector&);
+    Vector& operator = (Vector&&);
 };
 
 class Position {

@@ -6,6 +6,10 @@ using pair_rectangle = std::pair<Rectangle, Rectangle>;
 
 Vector::Vector(int x,int y): x_coord(x), y_coord(y) {
 }
+Vector::Vector(const Vector& v): x_coord(v.x_coord), y_coord(v.y_coord) {
+}
+Vector::Vector(Vector&& v): x_coord(std::move(v.x_coord)), y_coord(std::move(v.y_coord)) {
+}
 bool Vector::operator == (Vector v) {
     return x_coord == v.x() && y_coord == v.y();
 }
@@ -23,10 +27,23 @@ Vector& Vector::operator += (Vector v) {
     y_coord += v.y();
     return *this;
 }
+Vector Vector::operator + (Vector v) {
+    return Vector(x_coord + v.x_coord, y_coord + v.y_coord);
+}
+Vector& Vector::operator = (const Vector& v) {
+    x_coord = v.x_coord;
+    y_coord = v.y_coord;
+    return *this;
+}
+Vector& Vector::operator = (Vector&& v) {
+    x_coord = std::move(v.x_coord);
+    y_coord = std::move(v.y_coord);
+    return *this;
+}
 
 //Position implementation
 
-Position::Position(Vector v): my_position(v.x(), v.y()) {
+Position::Position(Vector v): my_position(v) {
 }
 Position::Position(int x,int y): my_position(x, y) {
 }
