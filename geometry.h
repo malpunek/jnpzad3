@@ -15,12 +15,12 @@ public:
     Vector(int x,int y);
     Vector(const Vector&);
     Vector(Vector&&);
-    bool operator == (Vector);
+    bool operator == (const Vector&);
     int x();
     int y();
     Vector reflection();
-    Vector& operator += (Vector);
-    Vector operator + (Vector a);
+    Vector& operator += (const Vector&);
+    Vector operator + (const Vector&) const;
     Vector& operator = (const Vector&);
     Vector& operator = (Vector&&);
 };
@@ -28,16 +28,22 @@ public:
 class Position {
 private:
     Vector my_position;
-    Position(Vector v);
+    Position(Vector&&);
 public:
     Position(int x,int y);
-    bool operator == (Position);
+    Position(const Position&);
+    Position(Position&&);
+    bool operator == (const Position&);
     int x();
     int y();
     Position reflection();
-    Position& operator += (Vector);
+    Position& operator += (const Vector&);
+    Position operator + (const Vector&) const;
+    Position& operator = (const Position&);
+    Position& operator = (Position&&);
     static const Position origin();
 };
+
 
 class Rectangle {
 private:
@@ -71,5 +77,7 @@ public:
     void split_vertically(size_t idx, unsigned int place);
 };
 
+
+Position operator + (const Vector&, const Position&);
 
 #endif //GEOMETRY_H

@@ -10,8 +10,8 @@ Vector::Vector(const Vector& v): x_coord(v.x_coord), y_coord(v.y_coord) {
 }
 Vector::Vector(Vector&& v): x_coord(std::move(v.x_coord)), y_coord(std::move(v.y_coord)) {
 }
-bool Vector::operator == (Vector v) {
-    return x_coord == v.x() && y_coord == v.y();
+bool Vector::operator == (const Vector &v) {
+    return x_coord == v.x_coord && y_coord == v.y_coord;
 }
 int Vector::x() {
     return x_coord;
@@ -22,12 +22,12 @@ int Vector::y() {
 Vector Vector::reflection() {
     return Vector(y_coord, x_coord);
 }
-Vector& Vector::operator += (Vector v) {
-    x_coord += v.x();
-    y_coord += v.y();
+Vector& Vector::operator += (const Vector& v) {
+    x_coord += v.x_coord;
+    y_coord += v.y_coord;
     return *this;
 }
-Vector Vector::operator + (Vector v) {
+Vector Vector::operator + (const Vector& v) const {
     return Vector(x_coord + v.x_coord, y_coord + v.y_coord);
 }
 Vector& Vector::operator = (const Vector& v) {
@@ -43,11 +43,15 @@ Vector& Vector::operator = (Vector&& v) {
 
 //Position implementation
 
-Position::Position(Vector v): my_position(v) {
+Position::Position(Vector&& v): my_position(std::move(v)) {
 }
 Position::Position(int x,int y): my_position(x, y) {
 }
-bool Position::operator == (Position p) {
+Position::Position(const Position& p): my_position(p.my_position) {
+}
+Position::Position(Position&& p): my_position(std::move(p.my_position)) {
+}
+bool Position::operator == (const Position& p) {
     return my_position == p.my_position;
 }
 int Position::x() {
@@ -59,14 +63,26 @@ int Position::y() {
 Position Position::reflection() {
     return Position(my_position.reflection());
 }
-Position& Position::operator += (Vector v) {
+Position& Position::operator += (const Vector& v) {
     my_position += v;
+    return *this;
+}
+Position Position::operator + (const Vector& v) const {
+    return Position(my_position + v);
+}
+Position& Position::operator = (const Position& p) {
+    my_position = p.my_position;
+    return *this;
+}
+Position& Position::operator = (Position&& p) {
+    my_position = std::move(p.my_position);
     return *this;
 }
 const Position Position::origin() {
     static const Position p = Position(0, 0);
     return p;
 }
+
 
 //Rectangle implementation
 
@@ -148,4 +164,10 @@ void Rectangles::split_horizontally(size_t idx, unsigned int place) {
 }
 void Rectangles::split_vertically(size_t idx, unsigned int place) {
     insert_rectangles(idx, v[idx].split_vertically(place));
+}
+
+//Operators implementation
+
+Position operator + (const Vector& v, const Position& p) {
+    return p + v;
 }
