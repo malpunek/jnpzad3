@@ -51,6 +51,7 @@ public:
     std::pair<Rectangle, Rectangle> split_vertically(unsigned int place);
 };
 
+
 class Rectangles {
 private:
     std::vector<Rectangle> v;

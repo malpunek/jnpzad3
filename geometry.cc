@@ -102,12 +102,21 @@ size_t Rectangles::size() {
     return v.size();
 }
 bool Rectangles::operator == (Rectangles r) {
-    return v == r.v;
-}
-Rectangles& Rectangles::operator += (Vector v) {
-    for (Rectangle& r: v) {
-        r += v;
+    if (v.size() != r.size()) {
+        return false;
     }
+    for (size_t i = 0; i < v.size(); i ++) {
+        if (not (v[i] == r.v[i])) {
+            return false;
+        }
+    }
+    return true;
+}
+Rectangles& Rectangles::operator += (Vector vec) {
+    for (Rectangle& r: v) {
+        r += vec;
+    }
+    return *this;
 }
 void Rectangles::insert_rectangles(size_t idx, pair_rectangle rec) {
     v[idx] = rec.first;
@@ -118,8 +127,8 @@ void Rectangles::insert_rectangles(size_t idx, pair_rectangle rec) {
     v[idx + 1] = rec.second;
 }
 void Rectangles::split_horizontally(size_t idx, unsigned int place) {
-    insert_rectangles(idx, split_horizontally(v[idx], place));
+    insert_rectangles(idx, v[idx].split_horizontally(place));
 }
 void Rectangles::split_vertically(size_t idx, unsigned int place) {
-    insert_rectangles(idx, split_vertically(v[idx], place));
+    insert_rectangles(idx, v[idx].split_vertically(place));
 }
