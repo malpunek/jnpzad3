@@ -1,5 +1,5 @@
+#include <iostream>
 #include "geometry.h"
-#include <bits/stdc++.h>
 
 int main() {
     Vector v = Vector(4, 5);

@@ -1,7 +1,13 @@
 #ifndef GEOMETRY_H
 #define GEOMETRY_H
 
+#include <utility>
+#include <cassert>
+
 class Vector {
+//TODO czy wystarczy wsadzenie "prywatne" tutaj, czy trzeba to jakoś lepiej ukryć?
+private:
+    int x_coord, y_coord;
 public:
     Vector(int x,int y);
     bool operator == (Vector);
@@ -12,6 +18,9 @@ public:
 };
 
 class Position {
+private:
+    Vector my_position;
+    Position(Vector v);
 public:
     Position(int x,int y);
     bool operator == (Position);
@@ -19,7 +28,25 @@ public:
     int y();
     Position reflection();
     Position& operator += (Vector);
-    static const Position& origin();
+    static const Position origin();
 };
+
+class Rectangle {
+private:
+    unsigned int w, h;
+    Position p;
+public:
+    Rectangle(unsigned int width, unsigned int height, Position pos);
+    bool operator == (Rectangle);
+    unsigned int width();
+    unsigned int height();
+    Position pos();
+    Rectangle reflection();
+    Rectangle& operator += (Vector);
+    unsigned int area();
+    std::pair<Rectangle, Rectangle> split_horizontally(unsigned int place);
+    std::pair<Rectangle, Rectangle> split_vertically(unsigned int place);
+};
+
 
 #endif //GEOMETRY_H
