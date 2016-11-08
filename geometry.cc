@@ -152,14 +152,18 @@ pair_rectangle Rectangle::split_vertically(unsigned int place) {
 
 Rectangles::Rectangles(std::initializer_list<Rectangle> l = {}): v(l) {
 }
+Rectangles::Rectangles(const Rectangles& r): v(r.v) {
+}
+Rectangles::Rectangles(Rectangles&& r): v(std::move(r.v)) {
+}
 Rectangle& Rectangles::operator[] (size_t pos) {
     return v[pos];
 }
 size_t Rectangles::size() {
     return v.size();
 }
-bool Rectangles::operator == (Rectangles r) {
-    if (v.size() != r.size()) {
+bool Rectangles::operator == (const Rectangles& r) {
+    if (v.size() != r.v.size()) {
         return false;
     }
     for (size_t i = 0; i < v.size(); i ++) {
@@ -169,19 +173,35 @@ bool Rectangles::operator == (Rectangles r) {
     }
     return true;
 }
-Rectangles& Rectangles::operator += (Vector vec) {
+Rectangles& Rectangles::operator += (const Vector& vec) {
     for (Rectangle& r: v) {
         r += vec;
     }
     return *this;
 }
-void Rectangles::insert_rectangles(size_t idx, pair_rectangle rec) {
-    v[idx] = rec.first;
+Rectangles Rectangles::operator + (const Vector& vec) const {
+    Rectangles result;
+    for (const Rectangle& r: v) {
+        result.v.push_back(r + vec);
+    }
+    return result;
+}
+Rectangles& Rectangles::operator = (const Rectangles& r) {
+    v = r.v;
+    return *this;
+}
+Rectangles& Rectangles::operator = (Rectangles&& r) {
+    v = std::move(r.v);
+    return *this;
+}
+
+void Rectangles::insert_rectangles(size_t idx, pair_rectangle&& rec) {
+    v[idx] = std::move(rec.first);
     v.push_back(v.back());
     for (size_t i = v.size() - 1; i > idx + 1; i ++) {
         v[i] = v[i - 1];
     }
-    v[idx + 1] = rec.second;
+    v[idx + 1] = std::move(rec.second);
 }
 void Rectangles::split_horizontally(size_t idx, unsigned int place) {
     insert_rectangles(idx, v[idx].split_horizontally(place));
@@ -197,5 +217,9 @@ Position operator + (const Vector& v, const Position& p) {
 }
 
 Rectangle operator + (const Vector& v, const Rectangle& r) {
+    return r + v;
+}
+
+Rectangles operator + (const Vector& v, const Rectangles& r) {
     return r + v;
 }

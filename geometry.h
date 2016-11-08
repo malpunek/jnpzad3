@@ -72,13 +72,18 @@ public:
 class Rectangles {
 private:
     std::vector<Rectangle> v;
-    void insert_rectangles(size_t idx, std::pair<Rectangle, Rectangle>);
+    void insert_rectangles(size_t idx, std::pair<Rectangle, Rectangle>&&);
 public:
     Rectangles(std::initializer_list<Rectangle>);
+    Rectangles(const Rectangles&);
+    Rectangles(Rectangles&&);
     Rectangle& operator [] (size_t pos);
     size_t size();
-    bool operator == (Rectangles);
-    Rectangles& operator += (Vector);
+    bool operator == (const Rectangles&);
+    Rectangles& operator += (const Vector&);
+    Rectangles operator + (const Vector&) const;
+    Rectangles& operator = (const Rectangles&);
+    Rectangles& operator = (Rectangles&&);
     void split_horizontally(size_t idx, unsigned int place);
     void split_vertically(size_t idx, unsigned int place);
 };
@@ -86,5 +91,6 @@ public:
 
 Position operator + (const Vector&, const Position&);
 Rectangle operator + (const Vector&, const Rectangle&);
+Rectangles operator + (const Vector&, const Rectangles&);
 
 #endif //GEOMETRY_H
