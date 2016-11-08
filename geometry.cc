@@ -10,16 +10,16 @@ Vector::Vector(const Vector& v): x_coord(v.x_coord), y_coord(v.y_coord) {
 }
 Vector::Vector(Vector&& v): x_coord(std::move(v.x_coord)), y_coord(std::move(v.y_coord)) {
 }
-bool Vector::operator == (const Vector &v) {
+bool Vector::operator == (const Vector &v) const {
     return x_coord == v.x_coord && y_coord == v.y_coord;
 }
-int Vector::x() {
+int Vector::x() const {
     return x_coord;
 }
-int Vector::y() {
+int Vector::y() const {
     return y_coord;
 }
-Vector Vector::reflection() {
+Vector Vector::reflection() const {
     return Vector(y_coord, x_coord);
 }
 Vector& Vector::operator += (const Vector& v) {
@@ -51,16 +51,16 @@ Position::Position(const Position& p): my_position(p.my_position) {
 }
 Position::Position(Position&& p): my_position(std::move(p.my_position)) {
 }
-bool Position::operator == (const Position& p) {
+bool Position::operator == (const Position& p) const {
     return my_position == p.my_position;
 }
-int Position::x() {
+int Position::x() const {
     return my_position.x();
 }
-int Position::y() {
+int Position::y() const {
     return my_position.y();
 }
-Position Position::reflection() {
+Position Position::reflection() const {
     return Position(my_position.reflection());
 }
 Position& Position::operator += (const Vector& v) {
@@ -100,19 +100,19 @@ Rectangle::Rectangle(const Rectangle& r): w(r.w), h(r.h), p(r.p) {
 }
 Rectangle::Rectangle(Rectangle&& r): w(std::move(r.w)), h(std::move(r.h)), p(std::move(r.p)) {
 }
-bool Rectangle::operator == (const Rectangle& r) {
+bool Rectangle::operator == (const Rectangle& r) const {
     return w == r.w && h == r.h && p == r.p;
 }
-unsigned int Rectangle::width() {
+unsigned int Rectangle::width() const {
     return w;
 }
-unsigned int Rectangle::height() {
+unsigned int Rectangle::height() const {
     return h;
 }
-Position Rectangle::pos() {
+Position Rectangle::pos() const {
     return p;
 }
-Rectangle Rectangle::reflection() {
+Rectangle Rectangle::reflection() const {
     return Rectangle(h, w, p.reflection());
 }
 Rectangle& Rectangle::operator += (const Vector& v) {
@@ -134,15 +134,15 @@ Rectangle& Rectangle::operator = (Rectangle&& r) {
     p = std::move(r.p);
     return *this;
 }
-unsigned int Rectangle::area() {
+unsigned int Rectangle::area() const {
     return w * h;
 }
-pair_rectangle Rectangle::split_horizontally(unsigned int place) {
+pair_rectangle Rectangle::split_horizontally(unsigned int place) const {
     assert(place < h);
     Position second(p.x(), p.y() + place);
     return std::make_pair(Rectangle(w, place, p), Rectangle(w, h - place, second));
 }
-pair_rectangle Rectangle::split_vertically(unsigned int place) {
+pair_rectangle Rectangle::split_vertically(unsigned int place) const {
     assert(place < w);
     Position second(p.x() + place, p.y());
     return std::make_pair(Rectangle(place, h, p), Rectangle(w - place, h, second));
@@ -159,10 +159,10 @@ Rectangles::Rectangles(Rectangles&& r): v(std::move(r.v)) {
 Rectangle& Rectangles::operator[] (size_t pos) {
     return v[pos];
 }
-size_t Rectangles::size() {
+size_t Rectangles::size() const {
     return v.size();
 }
-bool Rectangles::operator == (const Rectangles& r) {
+bool Rectangles::operator == (const Rectangles& r) const {
     if (v.size() != r.v.size()) {
         return false;
     }
@@ -222,4 +222,19 @@ Rectangle operator + (const Vector& v, const Rectangle& r) {
 
 Rectangles operator + (const Vector& v, const Rectangles& r) {
     return r + v;
+}
+
+//Merge implementation
+
+Rectangle merge_horizontally(const Rectangle& r1, const Rectangle& r2) {
+    assert(r1.width() == r2.width());
+    Vector v(0, r1.height());
+    assert(r1.pos() + v == r2.pos());
+    return Rectangle(r1.width(), r1.height() + r2.height(), r1.pos()); 
+}
+Rectangle merge_vertically(const Rectangle& r1, const Rectangle& r2) {
+    assert(r1.height() == r2.height());
+    Vector v(r1.width(), 0);
+    assert(r1.pos() + v == r2.pos());
+    return Rectangle(r1.width() + r2.width(), r1.height(), r1.pos());
 }
