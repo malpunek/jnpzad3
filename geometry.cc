@@ -78,7 +78,7 @@ Position& Position::operator = (Position&& p) {
     my_position = std::move(p.my_position);
     return *this;
 }
-const Position Position::origin() {
+const Position& Position::origin() {
     static const Position p = Position(0, 0);
     return p;
 }
@@ -86,13 +86,22 @@ const Position Position::origin() {
 
 //Rectangle implementation
 
-Rectangle::Rectangle(unsigned int width, unsigned int height, Position pos = Position::origin()): 
+Rectangle::Rectangle(unsigned int width, unsigned int height, const Position& pos = Position::origin()): 
     w(width), h(height), p(pos) {
         assert(w != 0);
         assert(h != 0);
 };
-bool Rectangle::operator == (Rectangle r) {
-    return w == r.width() && h == r.height() && p == r.pos();
+Rectangle::Rectangle(unsigned int width, unsigned int height, Position&& pos): 
+    w(width), h(height), p(std::move(pos)) {
+        assert(w != 0);
+        assert(h != 0);
+};
+Rectangle::Rectangle(const Rectangle& r): w(r.w), h(r.h), p(r.p) {
+}
+Rectangle::Rectangle(Rectangle&& r): w(std::move(r.w)), h(std::move(r.h)), p(std::move(r.p)) {
+}
+bool Rectangle::operator == (const Rectangle& r) {
+    return w == r.w && h == r.h && p == r.p;
 }
 unsigned int Rectangle::width() {
     return w;
@@ -106,8 +115,23 @@ Position Rectangle::pos() {
 Rectangle Rectangle::reflection() {
     return Rectangle(h, w, p.reflection());
 }
-Rectangle& Rectangle::operator += (Vector v) {
+Rectangle& Rectangle::operator += (const Vector& v) {
     p += v;
+    return *this;
+}
+Rectangle Rectangle::operator + (const Vector& v) const {
+    return Rectangle(w, h, p + v);
+}
+Rectangle& Rectangle::operator = (const Rectangle& r) {
+    w = r.w;
+    h = r.h;
+    p = r.p;
+    return *this;
+}
+Rectangle& Rectangle::operator = (Rectangle&& r) {
+    w = std::move(r.w);
+    h = std::move(r.h);
+    p = std::move(r.p);
     return *this;
 }
 unsigned int Rectangle::area() {
@@ -170,4 +194,8 @@ void Rectangles::split_vertically(size_t idx, unsigned int place) {
 
 Position operator + (const Vector& v, const Position& p) {
     return p + v;
+}
+
+Rectangle operator + (const Vector& v, const Rectangle& r) {
+    return r + v;
 }

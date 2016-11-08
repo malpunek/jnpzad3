@@ -41,7 +41,7 @@ public:
     Position operator + (const Vector&) const;
     Position& operator = (const Position&);
     Position& operator = (Position&&);
-    static const Position origin();
+    static const Position& origin();
 };
 
 
@@ -50,13 +50,19 @@ private:
     unsigned int w, h;
     Position p;
 public:
-    Rectangle(unsigned int width, unsigned int height, Position pos);
-    bool operator == (Rectangle);
+    Rectangle(unsigned int width, unsigned int height, const Position& pos);
+    Rectangle(unsigned int width, unsigned int height, Position&& pos);
+    Rectangle(const Rectangle&);
+    Rectangle(Rectangle&&);
+    bool operator == (const Rectangle&);
     unsigned int width();
     unsigned int height();
     Position pos();
     Rectangle reflection();
-    Rectangle& operator += (Vector);
+    Rectangle& operator += (const Vector&);
+    Rectangle operator + (const Vector&) const;
+    Rectangle& operator = (const Rectangle&);
+    Rectangle& operator = (Rectangle&&);
     unsigned int area();
     std::pair<Rectangle, Rectangle> split_horizontally(unsigned int place);
     std::pair<Rectangle, Rectangle> split_vertically(unsigned int place);
@@ -79,5 +85,6 @@ public:
 
 
 Position operator + (const Vector&, const Position&);
+Rectangle operator + (const Vector&, const Rectangle&);
 
 #endif //GEOMETRY_H
