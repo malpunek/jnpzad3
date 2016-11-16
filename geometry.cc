@@ -30,12 +30,12 @@ Vector& Vector::operator += (const Vector& v) {
 Vector Vector::operator + (const Vector& v) const {
     return Vector(x_coord + v.x_coord, y_coord + v.y_coord);
 }
-Vector& Vector::operator = (const Vector& v) {
+Vector& Vector::operator = (const Vector& v) & {
     x_coord = v.x_coord;
     y_coord = v.y_coord;
     return *this;
 }
-Vector& Vector::operator = (Vector&& v) {
+Vector& Vector::operator = (Vector&& v) & {
     x_coord = std::move(v.x_coord);
     y_coord = std::move(v.y_coord);
     return *this;

@@ -21,8 +21,8 @@ public:
     Vector reflection() const;
     Vector& operator += (const Vector&);
     Vector operator + (const Vector&) const;
-    Vector& operator = (const Vector&);
-    Vector& operator = (Vector&&);
+    Vector& operator = (const Vector& v) &;
+    Vector& operator = (Vector&& v) &;
 };
 
 class Position {

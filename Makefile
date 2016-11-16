@@ -5,7 +5,7 @@ test: geometry.o test.o
 	$(CXX) $(CXXFLAGS) $^ -o $@
 geometry.o: geometry.cc geometry.h
 	$(CXX) $(CXXFLAGS) -c $<
-test.o: test.cc
+test.o: test.cc geometry.h
 	$(CXX) $(CXXFLAGS) -c $<
 	
 	
