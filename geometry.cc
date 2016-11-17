@@ -22,7 +22,7 @@ int Vector::y() const {
 Vector Vector::reflection() const {
     return Vector(y_coord, x_coord);
 }
-Vector& Vector::operator += (const Vector& v) {
+Vector& Vector::operator += (const Vector& v) & {
     x_coord += v.x_coord;
     y_coord += v.y_coord;
     return *this;
@@ -63,7 +63,7 @@ int Position::y() const {
 Position Position::reflection() const {
     return Position(my_position.reflection());
 }
-Position& Position::operator += (const Vector& v) {
+Position& Position::operator += (const Vector& v) & {
     my_position += v;
     return *this;
 }
@@ -117,7 +117,7 @@ Position Rectangle::pos() const {
 Rectangle Rectangle::reflection() const {
     return Rectangle(h, w, p.reflection());
 }
-Rectangle& Rectangle::operator += (const Vector& v) {
+Rectangle& Rectangle::operator += (const Vector& v) & {
     p += v;
     return *this;
 }
@@ -175,7 +175,7 @@ bool Rectangles::operator == (const Rectangles& r) const {
     }
     return true;
 }
-Rectangles& Rectangles::operator += (const Vector& vec) {
+Rectangles& Rectangles::operator += (const Vector& vec) & {
     for (Rectangle& r: v) {
         r += vec;
     }
