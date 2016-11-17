@@ -26,10 +26,10 @@ Vector& Vector::operator += (const Vector& v) & {
     x_coord += v.x_coord;
     y_coord += v.y_coord;
     return *this;
-}
+}/*
 Vector Vector::operator + (const Vector& v) const {
     return Vector(x_coord + v.x_coord, y_coord + v.y_coord);
-}
+}*/
 Vector& Vector::operator = (const Vector& v) & {
     x_coord = v.x_coord;
     y_coord = v.y_coord;
@@ -67,9 +67,10 @@ Position& Position::operator += (const Vector& v) & {
     my_position += v;
     return *this;
 }
+/*
 Position Position::operator + (const Vector& v) const {
     return Position(my_position + v);
-}
+}*/
 Position& Position::operator = (const Position& p) & {
     my_position = p.my_position;
     return *this;
@@ -121,9 +122,9 @@ Rectangle& Rectangle::operator += (const Vector& v) & {
     p += v;
     return *this;
 }
-Rectangle Rectangle::operator + (const Vector& v) const {
+/*Rectangle Rectangle::operator + (const Vector& v) const {
     return Rectangle(w, h, p + v);
-}
+}*/
 Rectangle& Rectangle::operator = (const Rectangle& r) & {
     w = r.w;
     h = r.h;
@@ -181,13 +182,13 @@ Rectangles& Rectangles::operator += (const Vector& vec) & {
     }
     return *this;
 }
-Rectangles Rectangles::operator + (const Vector& vec) const {
+/*Rectangles Rectangles::operator + (const Vector& vec) const {
     Rectangles result;
     for (const Rectangle& r: v) {
         result.v.push_back(r + vec);
     }
     return result;
-}
+}*/
 Rectangles& Rectangles::operator = (const Rectangles& r) & {
     v = r.v;
     return *this;
@@ -213,16 +214,25 @@ void Rectangles::split_vertically(size_t idx, unsigned int place) {
 }
 
 //Operators implementation
-
-Position operator + (const Vector& v, const Position& p) {
+Vector operator + (const Vector& lhs, const Vector& rhs) const {
+    return Vector(lhs.x() + rhs.x(), lhs.y() + rhs.y());
+}
+Position operator + (const Position& p, const Vector& v) const {
+	return Position(p) += v;
+}
+Position operator + (const Vector& v, const Position& p) const {
     return p + v;
 }
-
-Rectangle operator + (const Vector& v, const Rectangle& r) {
+Rectangle operator + (const Rectangle& r, const Vector& v) const {
+	return Rectangle(r) += v;
+}
+Rectangle operator + (const Vector& v, const Rectangle& r) const {
     return r + v;
 }
-
-Rectangles operator + (const Vector& v, const Rectangles& r) {
+Rectangles operator + (const Rectangles& r, const Vector& v) const {
+	return Rectangles(r) += v;
+}
+Rectangles operator + (const Vector& v, const Rectangles& r) const {
     return r + v;
 }
 
