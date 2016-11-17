@@ -17,7 +17,6 @@ public:
     int y() const;
     Vector reflection() const;
     Vector& operator += (const Vector&);
-//    Vector operator + (const Vector&) const;
     Vector& operator = (const Vector& v) &;
     Vector& operator = (Vector&& v) &;
 private:
@@ -34,7 +33,6 @@ public:
     int y() const;
     Position reflection() const;
     Position& operator += (const Vector&);
-//    Position operator + (const Vector&) const;
     Position& operator = (const Position&) &;
     Position& operator = (Position&&) &;
     static const Position& origin();
@@ -57,7 +55,6 @@ public:
     Position pos() const;
     Rectangle reflection() const;
     Rectangle& operator += (const Vector&);
-//    Rectangle operator + (const Vector&) const;
     Rectangle& operator = (const Rectangle&) &;
     Rectangle& operator = (Rectangle&&) &;
     unsigned int area() const;
@@ -78,7 +75,6 @@ public:
     size_t size() const;
     bool operator == (const Rectangles&) const;
     Rectangles& operator += (const Vector&);
-//    Rectangles operator + (const Vector&) const;
     Rectangles& operator = (const Rectangles&) &;
     Rectangles& operator = (Rectangles&&) &;
     void split_horizontally(size_t idx, unsigned int place);
