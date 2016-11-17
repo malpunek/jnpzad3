@@ -4,7 +4,7 @@
 
 using pair_rectangle = std::pair<Rectangle, Rectangle>;
 
-Vector::Vector(int x,int y): x_coord(x), y_coord(y) {
+Vector::Vector(int x, int y): x_coord(x), y_coord(y) {
 }
 Vector::Vector(const Vector& v): x_coord(v.x_coord), y_coord(v.y_coord) {
 }
@@ -45,7 +45,7 @@ Vector& Vector::operator = (Vector&& v) & {
 
 Position::Position(Vector&& v): my_position(std::move(v)) {
 }
-Position::Position(int x,int y): my_position(x, y) {
+Position::Position(int x, int y): my_position(x, y) {
 }
 Position::Position(const Position& p): my_position(p.my_position) {
 }
@@ -214,25 +214,25 @@ void Rectangles::split_vertically(size_t idx, unsigned int place) {
 }
 
 //Operators implementation
-Vector operator + (const Vector& lhs, const Vector& rhs) const {
+Vector operator + (const Vector& lhs, const Vector& rhs) {
     return Vector(lhs.x() + rhs.x(), lhs.y() + rhs.y());
 }
-Position operator + (const Position& p, const Vector& v) const {
+Position operator + (const Position& p, const Vector& v) {
 	return Position(p) += v;
 }
-Position operator + (const Vector& v, const Position& p) const {
+Position operator + (const Vector& v, const Position& p) {
     return p + v;
 }
-Rectangle operator + (const Rectangle& r, const Vector& v) const {
+Rectangle operator + (const Rectangle& r, const Vector& v) {
 	return Rectangle(r) += v;
 }
-Rectangle operator + (const Vector& v, const Rectangle& r) const {
+Rectangle operator + (const Vector& v, const Rectangle& r) {
     return r + v;
 }
-Rectangles operator + (const Rectangles& r, const Vector& v) const {
+Rectangles operator + (const Rectangles& r, const Vector& v) {
 	return Rectangles(r) += v;
 }
-Rectangles operator + (const Vector& v, const Rectangles& r) const {
+Rectangles operator + (const Vector& v, const Rectangles& r) {
     return r + v;
 }
 

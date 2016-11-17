@@ -17,7 +17,7 @@ public:
     int y() const;
     Vector reflection() const;
     Vector& operator += (const Vector&);
-    Vector operator + (const Vector&) const;
+//    Vector operator + (const Vector&) const;
     Vector& operator = (const Vector& v) &;
     Vector& operator = (Vector&& v) &;
 private:
@@ -34,7 +34,7 @@ public:
     int y() const;
     Position reflection() const;
     Position& operator += (const Vector&);
-    Position operator + (const Vector&) const;
+//    Position operator + (const Vector&) const;
     Position& operator = (const Position&) &;
     Position& operator = (Position&&) &;
     static const Position& origin();
@@ -57,7 +57,7 @@ public:
     Position pos() const;
     Rectangle reflection() const;
     Rectangle& operator += (const Vector&);
-    Rectangle operator + (const Vector&) const;
+//    Rectangle operator + (const Vector&) const;
     Rectangle& operator = (const Rectangle&) &;
     Rectangle& operator = (Rectangle&&) &;
     unsigned int area() const;
@@ -78,7 +78,7 @@ public:
     size_t size() const;
     bool operator == (const Rectangles&) const;
     Rectangles& operator += (const Vector&);
-    Rectangles operator + (const Vector&) const;
+//    Rectangles operator + (const Vector&) const;
     Rectangles& operator = (const Rectangles&) &;
     Rectangles& operator = (Rectangles&&) &;
     void split_horizontally(size_t idx, unsigned int place);
@@ -88,10 +88,13 @@ private:
     void insert_rectangles(size_t idx, std::pair<Rectangle, Rectangle>&&);
 };
 
-
+Vector operator + (const Vector&, const Vector&);
 Position operator + (const Vector&, const Position&);
+Position operator + (const Position&, const Vector&);
+Rectangle operator + (const Rectangle&, const Vector&);
 Rectangle operator + (const Vector&, const Rectangle&);
 Rectangles operator + (const Vector&, const Rectangles&);
+Rectangles operator + (const Rectangles&, const Vector&);
 
 Rectangle merge_horizontally(const Rectangle&, const Rectangle&);
 Rectangle merge_vertically(const Rectangle&, const Rectangle&);
