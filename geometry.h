@@ -8,9 +8,6 @@
 #include <initializer_list>
 
 class Vector {
-//TODO czy wystarczy wsadzenie "prywatne" tutaj, czy trzeba to jakoś lepiej ukryć?
-private:
-    int x_coord, y_coord;
 public:
     Vector(int x,int y);
     Vector(const Vector&);
@@ -23,12 +20,11 @@ public:
     Vector operator + (const Vector&) const;
     Vector& operator = (const Vector& v) &;
     Vector& operator = (Vector&& v) &;
+private:
+    int x_coord, y_coord;
 };
 
 class Position {
-private:
-    Vector my_position;
-    Position(Vector&&);
 public:
     Position(int x,int y);
     Position(const Position&);
@@ -42,13 +38,13 @@ public:
     Position& operator = (const Position&) &;
     Position& operator = (Position&&) &;
     static const Position& origin();
+private:
+    Vector my_position;
+    Position(Vector&&);
 };
 
 
 class Rectangle {
-private:
-    unsigned int w, h;
-    Position p;
 public:
     Rectangle(unsigned int width, unsigned int height, const Position& pos);
     Rectangle(unsigned int width, unsigned int height, Position&& pos);
@@ -67,13 +63,13 @@ public:
     unsigned int area() const;
     std::pair<Rectangle, Rectangle> split_horizontally(unsigned int place) const;
     std::pair<Rectangle, Rectangle> split_vertically(unsigned int place) const;
+private:
+    unsigned int w, h;
+    Position p;
 };
 
 
 class Rectangles {
-private:
-    std::vector<Rectangle> v;
-    void insert_rectangles(size_t idx, std::pair<Rectangle, Rectangle>&&);
 public:
     Rectangles(std::initializer_list<Rectangle>);
     Rectangles(const Rectangles&);
@@ -87,6 +83,9 @@ public:
     Rectangles& operator = (Rectangles&&) &;
     void split_horizontally(size_t idx, unsigned int place);
     void split_vertically(size_t idx, unsigned int place);
+private:
+    std::vector<Rectangle> v;
+    void insert_rectangles(size_t idx, std::pair<Rectangle, Rectangle>&&);
 };
 
 

@@ -17,19 +17,14 @@ int main() {
     std::cout << v.y() << std::endl;
     Vector a(3, 4), b(6, 7), c(0,0);
 //    (a + b) = v;
-    a = v;
-    v = a + b;
-//    int x, y, z;
-//    int i = 10;
-//    x = (y + z) = i;
-
-    vector<int> t = fun();
-    fun() = t;
-    int x = 2;
-//    abc() = x;
+    a = a;
+	Position p(3, 4);
+	p = p;
+	Rectangle r(3, 4, p);
+	r = r;
    
     std::cout << a.x() << " " << a.y() << std::endl;
-    std::cout << b.x() << " " << b.y() << std::endl;
-    std::cout << c.x() << " " << c.y() << std::endl;
+    std::cout << p.x() << " " << p.y() << std::endl;
+    std::cout << r.width() << " " << r.height() <<" "<< r.pos().x() <<" "<<r.pos().y() << std::endl;
 //    std::cout << x <<" " << y << " " << z << std::endl;
 }
