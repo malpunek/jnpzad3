@@ -8,4 +8,7 @@ geometry.o: geometry.cc geometry.h
 test.o: test.cc geometry.h
 	$(CXX) $(CXXFLAGS) -c $<
 	
-	
+test_forum: geometry.o test_forum.o
+	$(CXX) $(CXXFLAGS) $^ -o $@
+test_forum.o: test_forum.cc geometry.h
+	$(CXX) $(CXXFLAGS) -c $<

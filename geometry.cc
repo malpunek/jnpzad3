@@ -70,11 +70,11 @@ Position& Position::operator += (const Vector& v) {
 Position Position::operator + (const Vector& v) const {
     return Position(my_position + v);
 }
-Position& Position::operator = (const Position& p) {
+Position& Position::operator = (const Position& p) & {
     my_position = p.my_position;
     return *this;
 }
-Position& Position::operator = (Position&& p) {
+Position& Position::operator = (Position&& p) & {
     my_position = std::move(p.my_position);
     return *this;
 }
@@ -95,6 +95,8 @@ Rectangle::Rectangle(unsigned int width, unsigned int height, Position&& pos):
     w(width), h(height), p(std::move(pos)) {
         assert(w != 0);
         assert(h != 0);
+};
+Rectangle::Rectangle(unsigned int width, unsigned int height): Rectangle(width, height, Position::origin()) {
 };
 Rectangle::Rectangle(const Rectangle& r): w(r.w), h(r.h), p(r.p) {
 }
@@ -122,13 +124,13 @@ Rectangle& Rectangle::operator += (const Vector& v) {
 Rectangle Rectangle::operator + (const Vector& v) const {
     return Rectangle(w, h, p + v);
 }
-Rectangle& Rectangle::operator = (const Rectangle& r) {
+Rectangle& Rectangle::operator = (const Rectangle& r) & {
     w = r.w;
     h = r.h;
     p = r.p;
     return *this;
 }
-Rectangle& Rectangle::operator = (Rectangle&& r) {
+Rectangle& Rectangle::operator = (Rectangle&& r) & {
     w = std::move(r.w);
     h = std::move(r.h);
     p = std::move(r.p);
@@ -186,11 +188,11 @@ Rectangles Rectangles::operator + (const Vector& vec) const {
     }
     return result;
 }
-Rectangles& Rectangles::operator = (const Rectangles& r) {
+Rectangles& Rectangles::operator = (const Rectangles& r) & {
     v = r.v;
     return *this;
 }
-Rectangles& Rectangles::operator = (Rectangles&& r) {
+Rectangles& Rectangles::operator = (Rectangles&& r) & {
     v = std::move(r.v);
     return *this;
 }
@@ -198,7 +200,7 @@ Rectangles& Rectangles::operator = (Rectangles&& r) {
 void Rectangles::insert_rectangles(size_t idx, pair_rectangle&& rec) {
     v[idx] = std::move(rec.first);
     v.push_back(v.back());
-    for (size_t i = v.size() - 1; i > idx + 1; i ++) {
+    for (size_t i = v.size() - 1; i > idx + 1; i --) {
         v[i] = v[i - 1];
     }
     v[idx + 1] = std::move(rec.second);

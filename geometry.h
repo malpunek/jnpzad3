@@ -39,8 +39,8 @@ public:
     Position reflection() const;
     Position& operator += (const Vector&);
     Position operator + (const Vector&) const;
-    Position& operator = (const Position&);
-    Position& operator = (Position&&);
+    Position& operator = (const Position&) &;
+    Position& operator = (Position&&) &;
     static const Position& origin();
 };
 
@@ -52,6 +52,7 @@ private:
 public:
     Rectangle(unsigned int width, unsigned int height, const Position& pos);
     Rectangle(unsigned int width, unsigned int height, Position&& pos);
+    Rectangle(unsigned int width, unsigned int height);
     Rectangle(const Rectangle&);
     Rectangle(Rectangle&&);
     bool operator == (const Rectangle&) const;
@@ -61,8 +62,8 @@ public:
     Rectangle reflection() const;
     Rectangle& operator += (const Vector&);
     Rectangle operator + (const Vector&) const;
-    Rectangle& operator = (const Rectangle&);
-    Rectangle& operator = (Rectangle&&);
+    Rectangle& operator = (const Rectangle&) &;
+    Rectangle& operator = (Rectangle&&) &;
     unsigned int area() const;
     std::pair<Rectangle, Rectangle> split_horizontally(unsigned int place) const;
     std::pair<Rectangle, Rectangle> split_vertically(unsigned int place) const;
@@ -82,8 +83,8 @@ public:
     bool operator == (const Rectangles&) const;
     Rectangles& operator += (const Vector&);
     Rectangles operator + (const Vector&) const;
-    Rectangles& operator = (const Rectangles&);
-    Rectangles& operator = (Rectangles&&);
+    Rectangles& operator = (const Rectangles&) &;
+    Rectangles& operator = (Rectangles&&) &;
     void split_horizontally(size_t idx, unsigned int place);
     void split_vertically(size_t idx, unsigned int place);
 };
